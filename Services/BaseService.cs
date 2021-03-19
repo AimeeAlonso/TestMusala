@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using DataAccess.Repositories;
 using Domain;
-using Domain.Utils;
+using Services.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -34,36 +34,30 @@ namespace Services
         /// </summary>
         /// <param name="instance"></param>
         /// <returns></returns>
-        public virtual async Task<Result> Delete(T instance)
+        public virtual async Task<Result> Delete(int id)
         {
 
+            var result = new Result();
 
-            if (instance == null)
+            try
             {
-                var result = new Result();
-                result.AddError("Content for deletion is not filled.");
+                var instance = await this._repository.Get(id);
+                if (instance==null)
+                {
+                    result.AddError("Element to delet not found");
+                }
+                else  await this._repository.Delete(instance);
+            }
+            catch (System.Exception)
+            {
 
-                return result;
+                result.AddError("Unexpected error deleting ");
             }
 
-            return await this._repository.Delete(instance);
+            return result;
 
         }
 
-        /// <summary>
-        /// Base method for deleting a object collection from repository.
-        /// </summary>
-        /// <param name="instances"></param>
-        /// <returns></returns>
-        public virtual async Task<Result> Delete(IEnumerable<T> instances)
-        {
-            if (instances == null || instances.Count() == 0)
-            {
-                 return new Result();
-            }
-
-            return await this._repository.Delete(instances);
-        }
 
         /// <summary>
         /// Base method for insert an object to repository.
@@ -72,16 +66,28 @@ namespace Services
         /// <returns></returns>
         public virtual async Task<Result> Insert(T instance)
         {
-
+            var result = new Result();
             if (instance == null)
             {
-                var result = new Result();
+               
                 result.AddError("Content for add is not filled.");
 
-                return result;
+               
             }
+            else
+            {
+                 try
+                {
+                    await this._repository.Insert(instance);
+                }
+                catch (System.Exception)
+                {
 
-            return await this._repository.Insert(instance);
+                    result.AddError("Unexpected error inserting ");
+                }
+
+            }
+            return result;
 
         }
 
@@ -93,24 +99,33 @@ namespace Services
         /// <returns></returns>
         public virtual async Task<Result> Update(T instance)
         {
+            var result = new Result();
 
             if (instance == null)
             {
-                var result = new Result();
                 result.AddError("Content for update is not filled.");
 
-                return result;
             }
 
-            if (instance.Id == 0)
+            else if (instance.Id == 0)
             {
-                var result = new Result();
                 result.AddError("Record not found (Id is zero).");
 
-                return result;
             }
+            else
+            {
+                try
+                {
+                    await this._repository.Update(instance);
+                }
+                catch (System.Exception)
+                {
 
-            return await this._repository.Update(instance);
+                    result.AddError("Unexpected error updating ");
+                }
+            }
+           
+            return result;
 
         }
 
@@ -120,9 +135,9 @@ namespace Services
         /// Base method for getting all objects from repository.
         /// </summary>
         /// <returns></returns>
-        public async Task<Result<IEnumerable<T>>> Get()
+        public async Task<IEnumerable<T>> GetAll()
         {
-            return await this._repository.Get();
+            return  this._repository.GetAll();
         }
 
         /// <summary>
@@ -132,26 +147,28 @@ namespace Services
         /// <returns></returns>
         public async Task<Result<T>> Get(int id)
         {
-            return await this._repository.Get(id);
-        }
+            var result = new Result<T>();
 
-        /// <summary>
-        /// Base method for getting an object collection from repository filtering by related ids.
-        /// </summary>
-        /// <param name="ids"></param>
-        /// <returns></returns>
-        public async Task<Result<IEnumerable<T>>> Get(IEnumerable<int> ids)
-        {
+             if (id == 0)
+            {
+                result.AddError("Record not found (Id is zero).");
 
-            if (ids == null || ids.Count() == 0)
-                return new Result<IEnumerable<T>>()
+            }
+            else
+            {
+                try
                 {
-                    Content = new List<T>()
-                };
+                    result.Content = await this._repository.Get(id);
+                }
+                catch (System.Exception)
+                {
 
-            return await this._repository.Get(ids);
-
+                    result.AddError("Unexpected error finding element ");
+                }
+            }
+            return result;
         }
+
     }
 }
 

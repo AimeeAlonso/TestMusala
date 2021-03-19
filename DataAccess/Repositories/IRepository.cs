@@ -1,7 +1,7 @@
 ﻿using Domain;
-using Domain.Utils;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,20 +13,17 @@ namespace DataAccess.Repositories
     /// <typeparam name="T"></typeparam>
     public interface IRepository<T> where T : BaseEntity, new()
     {
-        Task<Result> Insert(T instance);
+        Task Insert(T instance);
 
 
-        Task<Result> Update(T instance);
+        Task Update(T instance);
 
 
-        Task<Result> Delete(T instance);
+        Task Delete(T instance);
 
-        Task<Result> Delete(IEnumerable<T> instances);
 
-        Task<Result<IEnumerable<T>>> Get();
+        Task<T> Get(int id);
 
-        Task<Result<T>> Get(int id);
-
-        Task<Result<IEnumerable<T>>> Get(IEnumerable<int> ids);
+        IQueryable<T> GetAll();
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Domain;
-using Domain.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -37,119 +36,31 @@ namespace DataAccess.Repositories
         /// </summary>
         /// <param name="instance"></param>
         /// <returns></returns>
-        public async Task<Result> Delete(T instance)
+        public async Task Delete(T instance)
         {
-            var result = new Result();
-
-            try
-            {
+           
                 this._entities.Remove(instance);
                 await this._dbContext.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-
-                result.AddError($"{this._defaultExceptionText} deleting record, " +
-                    $"try again or request technical team to view logs etc.");
-            }
-
-            return result;
         }
 
-        /// <summary>
-        /// Base method for deleting a object collection from database.
-        /// </summary>
-        /// <param name="instances"></param>
-        /// <returns></returns>
-        public async Task<Result> Delete(IEnumerable<T> instances)
-        {
-            var result = new Result();
-
-            try
-            {
-                foreach (var instance in instances)
-                {
-                    this._entities.Remove(instance);
-                }
-
-               await this._dbContext.SaveChangesAsync();
-            }
-            catch (Exception )
-            {
-
-                result.AddError($"{this._defaultExceptionText} deleting records, " +
-                    $"try again or request technical team to view logs etc.");
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Base method for getting all objects from database.
-        /// </summary>
-        /// <returns></returns>
-        public async Task<Result<IEnumerable<T>>> Get()
-        {
-            var result = new Result<IEnumerable<T>>();
-
-            try
-            {
-                result.Content = this._entities.AsEnumerable();
-            }
-            catch (Exception )
-            {
-
-                result.AddError($"{this._defaultExceptionText} getting record by 'Id', " +
-                    $"try again or request technical team to view logs etc.");
-            }
-
-            return result;
-        }
+     
 
         /// <summary>
         /// Base method for getting an object from database (async).
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<Result<T>> Get(int id)
+        public virtual async Task<T> Get(int id)
         {
-            var result = new Result<T>();
 
-            try
-            {
-                result.Content = await this._entities.SingleOrDefaultAsync(s => s.Id == id);
-            }
-            catch (Exception )
-            {
-
-                result.AddError($"{this._defaultExceptionText} getting record by 'Id', " +
-                    $"try again or request technical team to view logs etc.");
-            }
-
-            return result;
+             return await this._entities.SingleOrDefaultAsync(s => s.Id == id);
+            
         }
 
-        /// <summary>
-        /// Base method for getting an object collection from database filtering by related ids.
-        /// </summary>
-        /// <param name="ids"></param>
-        /// <returns></returns>
-        public virtual async Task<Result<IEnumerable<T>>> Get(IEnumerable<int> ids)
+
+        public virtual IQueryable<T> GetAll()
         {
-            var result = new Result<IEnumerable<T>>();
-
-            try
-            {
-                result.Content = this._entities.Where(s => ids.Any(id => id == s.Id));
-            }
-            catch (Exception )
-            {
-
-                result.AddError($"{this._defaultExceptionText} getting record by 'Ids', " +
-                    $"try again or request technical team to view logs etc.");
-            }
-
-            return result;
+            return  _entities.AsQueryable<T>();
         }
 
         /// <summary>
@@ -157,23 +68,12 @@ namespace DataAccess.Repositories
         /// </summary>
         /// <param name="instance"></param>
         /// <returns></returns>
-        public async Task<Result> Insert(T instance)
+        public async Task Insert(T instance)
         {
-            var result = new Result();
 
-            try
-            {
                 await this._entities.AddAsync(instance);
                 await this._dbContext.SaveChangesAsync();
-            }
-            catch (Exception )
-            {
-
-                result.AddError($"{this._defaultExceptionText} inserting record, " +
-                    $"try again or request technical team to view logs etc.");
-            }
-
-            return result;
+          
         }
 
 
@@ -183,26 +83,13 @@ namespace DataAccess.Repositories
         /// </summary>
         /// <param name="instance"></param>
         /// <returns></returns>
-        public async Task<Result> Update(T instance)
-        {
-            var result = new Result();
-
-            try
-            {
+        public async Task Update(T instance)
+        { 
                 if (instance != null)
                 {
                     this._entities.Update(instance);
                    await this._dbContext.SaveChangesAsync();
                 }
-            }
-            catch (Exception)
-            {
-
-                result.AddError($"{this._defaultExceptionText} updating record, " +
-                    $"try again or request technical team to view logs etc.");
-            }
-
-            return result;
         }
 
     }

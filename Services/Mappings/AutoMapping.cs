@@ -13,6 +13,8 @@ namespace Services.Mappings
         {
             CreateMap<Domain.Gateway, GatewayDto>();
             CreateMap<GatewayDto,Domain.Gateway>();
+            CreateMap<GatewayDetailsDto, Domain.Gateway>().ReverseMap();
+            CreateMap<DeviceDto, Device>().ReverseMap();
         }
     }
 }

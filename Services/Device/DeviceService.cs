@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using DataAccess.Repositories;
 using Domain;
-using Domain.Utils;
+using Services.Utils;
 using Services.Gateway.Dtos;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +24,16 @@ namespace Services
             }
             else
             {
-                result = await this._repository.Insert(_mapper.Map<Device>(device));
+                try
+                {
+                    await this._repository.Insert(_mapper.Map<Device>(device));
+                }
+                catch (System.Exception)
+                {
+
+                    result.AddError("Unexpected error adding a device");
+                }
+                 
             }
             return result;
         }

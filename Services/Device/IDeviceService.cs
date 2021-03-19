@@ -1,5 +1,6 @@
 ﻿using Domain;
-using Domain.Utils;
+using Services.Gateway.Dtos;
+using Services.Utils;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,6 +15,8 @@ namespace Services
     /// <typeparam name="T"></typeparam>
     public interface IDeviceService : IService<Device>
     {
-       
+        Task<Result> AddDevice(DeviceDto device);
+
+
     }
 }

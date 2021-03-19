@@ -1,5 +1,5 @@
 ﻿using Domain;
-using Domain.Utils;
+using Services.Utils;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -41,20 +41,14 @@ namespace Services
         /// </summary>
         /// <param name="instance"></param>
         /// <returns></returns>
-        Task<Result> Delete(T instance);
+        Task<Result> Delete(int id);
 
-        /// <summary>
-        /// Delete instances in database (instance inherit from 'BaseEntity').
-        /// </summary>
-        /// <param name="instances"></param>
-        /// <returns></returns>
-        Task<Result> Delete(IEnumerable<T> instances);
 
         /// <summary>
         /// Get all instances in database (instance inherit from 'BaseEntity').
         /// </summary>
         /// <returns></returns>
-        Task<Result<IEnumerable<T>>> Get();
+        Task<IEnumerable<T>> GetAll();
 
         /// <summary>
         /// Get instance in database by 'id' attribute (instance inherit from 'BaseEntity').
@@ -63,11 +57,5 @@ namespace Services
         /// <returns></returns>
         Task<Result<T>> Get(int id);
 
-        /// <summary>
-        /// Get all instances in database that 'id' in colletion array parameter (instance inherit from 'BaseEntity').
-        /// </summary>
-        /// <param name="ids"></param>
-        /// <returns></returns>
-        Task<Result<IEnumerable<T>>> Get(IEnumerable<int> ids);
     }
 }
