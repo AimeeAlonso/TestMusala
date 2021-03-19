@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace DataAccess.Repositories
@@ -11,5 +12,6 @@ namespace DataAccess.Repositories
         public GatewayRepository(IConfiguration config) : base(config)
         {
         }
+      
     }
 }

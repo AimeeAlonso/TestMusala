@@ -32,10 +32,6 @@ namespace DataAccess.Migrations
                     b.Property<int>("GatewayId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 

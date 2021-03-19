@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Services.Gateway.Dtos
+{
+   public  class DeviceDto
+    {
+        public int Id { get; set; }
+        public string Vendor { get; set; }
+        public DateTime DateCreated { get; set; }
+        public bool Status { get; set; }
+        public int GatewayId { get; set; }
+    }
+}

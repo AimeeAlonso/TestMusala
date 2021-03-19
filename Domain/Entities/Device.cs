@@ -9,9 +9,6 @@ namespace Domain
         [Required]
         public string Vendor { get; set; }
         [Required]
-        [Phone]
-        public string Phone { get; set; }
-        [Required]
         public DateTime DateCreated { get; set; }
         [Required]
         public bool Status { get; set; }

@@ -25,48 +25,36 @@ namespace Services
         /// </summary>
         /// <param name="instance"></param>
         /// <returns></returns>
-        Result Insert(T instance);
+        Task<Result> Insert(T instance);
 
-        /// <summary>
-        /// Insert instances in database (instances are inherit from 'BaseEntity').
-        /// </summary>
-        /// <param name="instances"></param>
-        /// <returns></returns>
-        Result Insert(IEnumerable<T> instances);
 
         /// <summary>
         /// Update instance in database (instance inherit from 'BaseEntity').
         /// </summary>
         /// <param name="instance"></param>
         /// <returns></returns>
-        Result Update(T instance);
+        Task<Result> Update(T instance);
 
-        /// <summary>
-        /// Update instances in database (instance inherit from 'BaseEntity').
-        /// </summary>
-        /// <param name="instances"></param>
-        /// <returns></returns>
-        Result Update(IEnumerable<T> instances);
 
         /// <summary>
         /// Delete instance in database (instance inherit from 'BaseEntity').
         /// </summary>
         /// <param name="instance"></param>
         /// <returns></returns>
-        Result Delete(T instance);
+        Task<Result> Delete(T instance);
 
         /// <summary>
         /// Delete instances in database (instance inherit from 'BaseEntity').
         /// </summary>
         /// <param name="instances"></param>
         /// <returns></returns>
-        Result Delete(IEnumerable<T> instances);
+        Task<Result> Delete(IEnumerable<T> instances);
 
         /// <summary>
         /// Get all instances in database (instance inherit from 'BaseEntity').
         /// </summary>
         /// <returns></returns>
-        Result<IEnumerable<T>> Get();
+        Task<Result<IEnumerable<T>>> Get();
 
         /// <summary>
         /// Get instance in database by 'id' attribute (instance inherit from 'BaseEntity').
@@ -80,6 +68,6 @@ namespace Services
         /// </summary>
         /// <param name="ids"></param>
         /// <returns></returns>
-        Result<IEnumerable<T>> Get(IEnumerable<int> ids);
+        Task<Result<IEnumerable<T>>> Get(IEnumerable<int> ids);
     }
 }

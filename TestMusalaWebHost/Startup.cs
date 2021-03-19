@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using AutoMapper;
 
 namespace TestMusalaWebHost
 {
@@ -24,7 +25,8 @@ namespace TestMusalaWebHost
         {
             services.AddDbContext<TestDbContext>(
         options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-        
+
+        services.AddAutoMapper(typeof(Startup));
 
         services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory

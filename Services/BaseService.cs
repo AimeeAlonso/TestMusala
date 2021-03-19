@@ -1,4 +1,5 @@
-﻿using DataAccess.Repositories;
+﻿using AutoMapper;
+using DataAccess.Repositories;
 using Domain;
 using Domain.Utils;
 using System.Collections.Generic;
@@ -11,10 +12,11 @@ namespace Services
     {
         protected IRepository<T> _repository;
         protected string _defaultExceptionText;
-
-        public BaseService(IRepository<T> repository)
+        protected readonly IMapper _mapper;
+        public BaseService(IRepository<T> repository, IMapper mapper)
         {
             this._repository = repository;
+            this._mapper = mapper;
             this._defaultExceptionText = "try again or contact the responsible team.";
         }
 
@@ -32,7 +34,7 @@ namespace Services
         /// </summary>
         /// <param name="instance"></param>
         /// <returns></returns>
-        public virtual Result Delete(T instance)
+        public virtual async Task<Result> Delete(T instance)
         {
 
 
@@ -44,7 +46,7 @@ namespace Services
                 return result;
             }
 
-            return this._repository.Delete(instance);
+            return await this._repository.Delete(instance);
 
         }
 
@@ -53,20 +55,14 @@ namespace Services
         /// </summary>
         /// <param name="instances"></param>
         /// <returns></returns>
-        public virtual Result Delete(IEnumerable<T> instances)
+        public virtual async Task<Result> Delete(IEnumerable<T> instances)
         {
             if (instances == null || instances.Count() == 0)
             {
-                /*
-                var result = new Result();
-                result.AddError("Content for deletion is not filled.");
-
-                return result;*/
-
-                return new Result();
+                 return new Result();
             }
 
-            return this._repository.Delete(instances);
+            return await this._repository.Delete(instances);
         }
 
         /// <summary>
@@ -74,7 +70,7 @@ namespace Services
         /// </summary>
         /// <param name="instance"></param>
         /// <returns></returns>
-        public virtual Result Insert(T instance)
+        public virtual async Task<Result> Insert(T instance)
         {
 
             if (instance == null)
@@ -85,34 +81,17 @@ namespace Services
                 return result;
             }
 
-            return this._repository.Insert(instance);
+            return await this._repository.Insert(instance);
 
         }
 
-        /// <summary>
-        /// Base method for insert an object collection to repository.
-        /// </summary>
-        /// <param name="instances"></param>
-        /// <returns></returns>
-        public virtual Result Insert(IEnumerable<T> instances)
-        {
-            if (instances == null || instances.Count() == 0)
-            {
-                var result = new Result();
-                result.AddError("Content for add is not filled.");
-
-                return result;
-            }
-
-            return this._repository.Insert(instances);
-        }
 
         /// <summary>
         /// Base method for update an object from repository.
         /// </summary>
         /// <param name="instance"></param>
         /// <returns></returns>
-        public virtual Result Update(T instance)
+        public virtual async Task<Result> Update(T instance)
         {
 
             if (instance == null)
@@ -131,35 +110,19 @@ namespace Services
                 return result;
             }
 
-            return this._repository.Update(instance);
+            return await this._repository.Update(instance);
 
         }
 
-        /// <summary>
-        /// Base method for update an object collection from repository.
-        /// </summary>
-        /// <param name="instances"></param>
-        /// <returns></returns>
-        public virtual Result Update(IEnumerable<T> instances)
-        {
-            if (instances == null || instances.Count() == 0)
-            {
-                var result = new Result();
-                result.AddError("Content for update is not filled.");
 
-                return result;
-            }
-
-            return this._repository.Update(instances);
-        }
 
         /// <summary>
         /// Base method for getting all objects from repository.
         /// </summary>
         /// <returns></returns>
-        public Result<IEnumerable<T>> Get()
+        public async Task<Result<IEnumerable<T>>> Get()
         {
-            return this._repository.Get();
+            return await this._repository.Get();
         }
 
         /// <summary>
@@ -177,7 +140,7 @@ namespace Services
         /// </summary>
         /// <param name="ids"></param>
         /// <returns></returns>
-        public Result<IEnumerable<T>> Get(IEnumerable<int> ids)
+        public async Task<Result<IEnumerable<T>>> Get(IEnumerable<int> ids)
         {
 
             if (ids == null || ids.Count() == 0)
@@ -186,7 +149,7 @@ namespace Services
                     Content = new List<T>()
                 };
 
-            return this._repository.Get(ids);
+            return await this._repository.Get(ids);
 
         }
     }

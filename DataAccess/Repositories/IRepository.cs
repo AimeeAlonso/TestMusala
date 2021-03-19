@@ -13,22 +13,20 @@ namespace DataAccess.Repositories
     /// <typeparam name="T"></typeparam>
     public interface IRepository<T> where T : BaseEntity, new()
     {
-        Result Insert(T instance);
+        Task<Result> Insert(T instance);
 
-        Result Insert(IEnumerable<T> instances);
 
-        Result Update(T instance);
+        Task<Result> Update(T instance);
 
-        Result Update(IEnumerable<T> instances);
 
-        Result Delete(T instance);
+        Task<Result> Delete(T instance);
 
-        Result Delete(IEnumerable<T> instances);
+        Task<Result> Delete(IEnumerable<T> instances);
 
-        Result<IEnumerable<T>> Get();
+        Task<Result<IEnumerable<T>>> Get();
 
         Task<Result<T>> Get(int id);
 
-        Result<IEnumerable<T>> Get(IEnumerable<int> ids);
+        Task<Result<IEnumerable<T>>> Get(IEnumerable<int> ids);
     }
 }

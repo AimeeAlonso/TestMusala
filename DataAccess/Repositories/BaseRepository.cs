@@ -37,14 +37,14 @@ namespace DataAccess.Repositories
         /// </summary>
         /// <param name="instance"></param>
         /// <returns></returns>
-        public Result Delete(T instance)
+        public async Task<Result> Delete(T instance)
         {
             var result = new Result();
 
             try
             {
                 this._entities.Remove(instance);
-                this._dbContext.SaveChanges();
+                await this._dbContext.SaveChangesAsync();
             }
             catch (Exception)
             {
@@ -61,7 +61,7 @@ namespace DataAccess.Repositories
         /// </summary>
         /// <param name="instances"></param>
         /// <returns></returns>
-        public Result Delete(IEnumerable<T> instances)
+        public async Task<Result> Delete(IEnumerable<T> instances)
         {
             var result = new Result();
 
@@ -72,7 +72,7 @@ namespace DataAccess.Repositories
                     this._entities.Remove(instance);
                 }
 
-                this._dbContext.SaveChanges();
+               await this._dbContext.SaveChangesAsync();
             }
             catch (Exception )
             {
@@ -88,7 +88,7 @@ namespace DataAccess.Repositories
         /// Base method for getting all objects from database.
         /// </summary>
         /// <returns></returns>
-        public Result<IEnumerable<T>> Get()
+        public async Task<Result<IEnumerable<T>>> Get()
         {
             var result = new Result<IEnumerable<T>>();
 
@@ -134,7 +134,7 @@ namespace DataAccess.Repositories
         /// </summary>
         /// <param name="ids"></param>
         /// <returns></returns>
-        public virtual Result<IEnumerable<T>> Get(IEnumerable<int> ids)
+        public virtual async Task<Result<IEnumerable<T>>> Get(IEnumerable<int> ids)
         {
             var result = new Result<IEnumerable<T>>();
 
@@ -157,14 +157,14 @@ namespace DataAccess.Repositories
         /// </summary>
         /// <param name="instance"></param>
         /// <returns></returns>
-        public Result Insert(T instance)
+        public async Task<Result> Insert(T instance)
         {
             var result = new Result();
 
             try
             {
-                this._entities.Add(instance);
-                this._dbContext.SaveChanges();
+                await this._entities.AddAsync(instance);
+                await this._dbContext.SaveChangesAsync();
             }
             catch (Exception )
             {
@@ -176,22 +176,14 @@ namespace DataAccess.Repositories
             return result;
         }
 
-        /// <summary>
-        /// Base method for insert an object collection to database.
-        /// </summary>
-        /// <param name="instances"></param>
-        /// <returns></returns>
-        public Result Insert(IEnumerable<T> instances)
-        {
-            throw new System.NotImplementedException();
-        }
+
 
         /// <summary>
         /// Base method for update an object from database.
         /// </summary>
         /// <param name="instance"></param>
         /// <returns></returns>
-        public Result Update(T instance)
+        public async Task<Result> Update(T instance)
         {
             var result = new Result();
 
@@ -200,7 +192,7 @@ namespace DataAccess.Repositories
                 if (instance != null)
                 {
                     this._entities.Update(instance);
-                    this._dbContext.SaveChanges();
+                   await this._dbContext.SaveChangesAsync();
                 }
             }
             catch (Exception)
@@ -213,14 +205,5 @@ namespace DataAccess.Repositories
             return result;
         }
 
-        /// <summary>
-        /// Base method for update an object collection from database.
-        /// </summary>
-        /// <param name="instances"></param>
-        /// <returns></returns>
-        public Result Update(IEnumerable<T> instances)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace DataAccess.Repositories
@@ -10,6 +11,15 @@ namespace DataAccess.Repositories
     {
         public DeviceRepository( IConfiguration config) : base( config)
         {
+
+        }
+        public IEnumerable<Device> GetAllByGateway(int gatewayId)
+        {
+            return this._entities.Where(s => s.GatewayId==gatewayId);
+        }
+        public int GetDeviceCount(int gatewayId)
+        {
+            return GetAllByGateway(gatewayId).Count();
         }
     }
 }
