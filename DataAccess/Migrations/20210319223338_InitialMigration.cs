@@ -13,7 +13,7 @@ namespace DataAccess.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SerialNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SerialNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IPV4Address = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -47,7 +47,14 @@ namespace DataAccess.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Devices_GatewayId",
                 table: "Devices",
-                column: "GatewayId");
+                column: "GatewayId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Gateways_SerialNumber",
+                table: "Gateways",
+                column: "SerialNumber",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -44,7 +44,7 @@ namespace Services
                 var instance = await this._repository.Get(id);
                 if (instance==null)
                 {
-                    result.AddError("Element to delet not found");
+                    result.AddError("Element to delete not found");
                 }
                 else  await this._repository.Delete(instance);
             }

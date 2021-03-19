@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace Services
 {
@@ -26,15 +27,23 @@ namespace Services
         public async Task<Result> AddGateway(GatewayDto gateway)
         {
             Result result = new Result();
-          
-            try
+            IPAddress ipv4Address = null;
+            IPAddress.TryParse(gateway.IPV4Address, out ipv4Address);
+            if (ipv4Address==null)
             {
-                await this._repository.Insert(_mapper.Map<Domain.Gateway>(gateway));
+                result.AddError("Invalid IPV4 address");
             }
-            catch (System.Exception)
+            else
             {
+                try
+                {
+                    await this._repository.Insert(_mapper.Map<Domain.Gateway>(gateway));
+                }
+                catch (System.Exception)
+                {
 
-                result.AddError("Unexpected error adding a device");
+                    result.AddError("Unexpected error adding a device");
+                }
             }
             return result;
         }
@@ -56,10 +65,11 @@ namespace Services
             {
                 gateways = gateways.SortBy("Id", "asc");
             }
+            
+            var pageData = gateways.Count()>0 ?  await gateways.Paginate(pageInfo).ToListAsync():new List<Domain.Gateway>();
 
-            var pageData = await gateways.Paginate(pageInfo).ToListAsync();
-
-            var pageDataDto = _mapper.Map<IEnumerable<GatewayDto>>(pageData);
+            //var pageDataDto = _mapper.Map<IEnumerable<GatewayDto>>(pageData);
+            var pageDataDto = pageData.Select(gw => _mapper.Map<GatewayDto>(gw));
 
             return new PaginationResultDto<GatewayDto>(pageInfo, pageDataDto);
         }

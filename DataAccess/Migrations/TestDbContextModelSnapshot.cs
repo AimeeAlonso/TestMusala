@@ -41,7 +41,8 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GatewayId");
+                    b.HasIndex("GatewayId")
+                        .IsUnique();
 
                     b.ToTable("Devices");
                 });
@@ -63,9 +64,12 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("SerialNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SerialNumber")
+                        .IsUnique();
 
                     b.ToTable("Gateways");
                 });

@@ -9,7 +9,7 @@ namespace DataAccess.Repositories
 {
     public class DeviceRepository:BaseRepository<Device>, IDeviceRepository
     {
-        public DeviceRepository( IConfiguration config) : base( config)
+        public DeviceRepository( TestDbContext dbContext) : base(dbContext)
         {
 
         }

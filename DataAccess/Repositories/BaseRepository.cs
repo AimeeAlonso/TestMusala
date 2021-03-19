@@ -22,11 +22,9 @@ namespace DataAccess.Repositories
         protected readonly DbSet<T> _entities;
         protected string _defaultExceptionText;
 
-        public BaseRepository( IConfiguration config)
+        public BaseRepository(TestDbContext dbContext )
         {
-            string sqlStr = config.GetConnectionString("default");
-
-            this._dbContext = new TestDbContext(sqlStr);
+            this._dbContext = dbContext;
             this._entities = this._dbContext.Set<T>();
             this._defaultExceptionText = "An unexpected error occurred while";
         }

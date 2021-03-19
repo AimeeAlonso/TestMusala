@@ -8,6 +8,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using AutoMapper;
+using Services;
+using DataAccess.Repositories;
+using Services.Mappings;
 
 namespace TestMusalaWebHost
 {
@@ -24,18 +27,21 @@ namespace TestMusalaWebHost
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<TestDbContext>(
-        options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+             options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-        services.AddAutoMapper(typeof(Startup));
+            services.AddAutoMapper(c => c.AddProfile<AutoMapping>(), typeof(Startup));
 
-        services.AddControllersWithViews();
+            services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
             });
-
-
+        services.AddScoped<IGatewayRepository, GatewayRepository>();
+        services.AddScoped<IDeviceRepository, DeviceRepository>();
+        services.AddScoped<IDeviceService, DeviceService>();
+        services.AddScoped<IGatewayService, GatewayService>();
+         services.AddScoped<IDeviceService, DeviceService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

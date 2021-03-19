@@ -11,7 +11,7 @@ namespace DataAccess.Repositories
 {
    public class GatewayRepository:BaseRepository<Gateway>,IGatewayRepository
     {
-        public GatewayRepository(IConfiguration config) : base(config)
+        public GatewayRepository(TestDbContext dbContext) : base(dbContext)
         {
         }
 

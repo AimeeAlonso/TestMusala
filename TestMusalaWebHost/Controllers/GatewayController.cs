@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace TestMusalaWebHost.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class GatewayController : ControllerBase
     {
         private IGatewayService _gatewayService;
@@ -26,18 +26,6 @@ namespace TestMusalaWebHost.Controllers
             _deviceService = deviceService;
         }
 
-        [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
-        {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                
-            })
-            .ToArray();
-        }
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GatewayDetailsDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -50,11 +38,11 @@ namespace TestMusalaWebHost.Controllers
         [HttpGet]
         [Produces("application/json")]
         public async Task<ActionResult<PaginationResultDto<GatewayDto>>> GetGateways(
-            [FromQuery] int pageNumber,
-            [FromQuery] int pageSize,
-            [FromQuery] string filterBy,
-            [FromQuery] string searchTerm,
-            [FromQuery] string sortBy)
+            [FromQuery] int pageNumber=1,
+            [FromQuery] int pageSize=10,
+            [FromQuery] string filterBy="",
+            [FromQuery] string searchTerm="",
+            [FromQuery] string sortBy="")
         {
             var pageInfo = new PaginationInfoDto(pageNumber, pageSize);
             string sortProperty;
