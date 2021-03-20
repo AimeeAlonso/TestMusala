@@ -1,1 +1,18 @@
-<p>gateways works!</p>
+<table class="table table-hover table-striped" >
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Serial Number</th>
+      <th>IPv4 Address</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let gateway of gateways">
+      <td>{{gateway.name}}</td>
+      <td>{{gateway.serialNumber}}</td>
+      <td>{{gateway.ipV4Address}}</td>
+      <td>Details...</td>
+    </tr>
+  </tbody>
+</table>
