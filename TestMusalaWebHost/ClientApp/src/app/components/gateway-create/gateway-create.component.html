@@ -1,0 +1,27 @@
+<form autocomplete="off" #gatewayDetails="ngForm" (ngSubmit)="save()">
+  <div class="row">
+    <h1 class="col" mat-dialog-title>Add Gateway </h1>
+  </div>
+  <br />
+  <div>
+    <div class="col-4">
+      <label>Serial Number: </label>
+      <input class="form-control" type="text" name="serialNumber" [(ngModel)]="gateway.serialNumber" required />
+    </div>
+    <div class="col-4">
+      <label>Name: </label>
+      <input class="form-control" type="text" name="name" [(ngModel)]="gateway.name" required />
+    </div>
+    <div class="col-4">
+      <label>IPV4 Address </label>
+      <input class="form-control" type="text" name="address" [(ngModel)]="gateway.ipV4Address" required /> 
+    </div>
+  </div>
+  <br />
+  <button class="btn btn-outline-secondary m-1 " type="button" flex="15" (click)="return()">
+    Cancel
+  </button>
+  <button class="btn btn-outline-success m-1" type="submit" flex="15">
+    Save
+  </button>
+</form>

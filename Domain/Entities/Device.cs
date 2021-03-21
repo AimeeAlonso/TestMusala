@@ -7,6 +7,8 @@ namespace Domain
     public class Device : BaseEntity
     {
         [Required]
+        public int UId { get; set; }
+        [Required]
         public string Vendor { get; set; }
         [Required]
         public DateTime DateCreated { get; set; }

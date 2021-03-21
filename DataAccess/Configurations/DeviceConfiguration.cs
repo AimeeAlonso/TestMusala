@@ -9,7 +9,7 @@ namespace TestMusala.DataAccess
     {
         public void Configure(EntityTypeBuilder<Device> builder)
         {
-            builder.HasIndex(o => new { o.GatewayId }).IsUnique();
+            builder.HasIndex(o => new { o.UId }).IsUnique();
             builder.ToTable("Devices");
         }
     }

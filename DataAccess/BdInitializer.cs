@@ -14,7 +14,7 @@ namespace DataAccess
 
             if (context.Gateways.Any())
             {
-                return;   
+                return;  
             }
 
             var gateways = new Gateway[]
@@ -27,19 +27,19 @@ namespace DataAccess
             };
             var devices = new Device[]
            {
-                new Device{Vendor="Vendor 1",DateCreated=new DateTime(2020,02,05),Status=true,GatewayId=1},
-                new Device{Vendor="Vendor 2",DateCreated=new DateTime(2021,04,05),Status=true,GatewayId=1},
-                new Device{ Vendor="Vendor 3",DateCreated=new DateTime(2020,08,25),Status=true,GatewayId=1},
-                new Device{ Vendor="Vendor 4",DateCreated=new DateTime(2020,10,16),Status=true,GatewayId=1},
-                new Device{ Vendor="Vendor 5",DateCreated=new DateTime(2020,11,09),Status=true,GatewayId=1},
-                new Device{ Vendor="Vendor 6",DateCreated=new DateTime(2020,05,16),Status=true,GatewayId=1},
-                new Device{ Vendor="Vendor 7",DateCreated=new DateTime(2019,02,12),Status=true,GatewayId=1},
-                new Device{ Vendor="Vendor 8",DateCreated=new DateTime(2019,04,23),Status=true,GatewayId=1},
-                new Device{ Vendor="Vendor 9",DateCreated=new DateTime(2010,02,14),Status=true,GatewayId=1},
-                new Device{ Vendor="Vendor 10",DateCreated=new DateTime(2020,06,03),Status=true,GatewayId=1},
-                new Device{ Vendor="Vendor 11",DateCreated=new DateTime(2020,09,19),Status=true,GatewayId=2},
-                new Device{ Vendor="Vendor 12",DateCreated=new DateTime(2020,12,05),Status=true,GatewayId=2},
-                new Device{ Vendor="Vendor 13",DateCreated=new DateTime(2020,01,25),Status=true,GatewayId=2}
+                new Device{UId=1, Vendor="Vendor 1",DateCreated=new DateTime(2020,02,05),Status=true,GatewayId=1},
+                new Device{UId=2, Vendor="Vendor 2",DateCreated=new DateTime(2021,04,05),Status=false,GatewayId=1},
+                new Device{UId=3, Vendor="Vendor 3",DateCreated=new DateTime(2020,08,25),Status=false,GatewayId=1},
+                new Device{UId=4, Vendor="Vendor 4",DateCreated=new DateTime(2020,10,16),Status=true,GatewayId=1},
+                new Device{UId=5, Vendor="Vendor 5",DateCreated=new DateTime(2020,11,09),Status=true,GatewayId=1},
+                new Device{UId=6, Vendor="Vendor 6",DateCreated=new DateTime(2020,05,16),Status=true,GatewayId=1},
+                new Device{UId=7, Vendor="Vendor 7",DateCreated=new DateTime(2019,02,12),Status=false,GatewayId=1},
+                new Device{UId=8, Vendor="Vendor 8",DateCreated=new DateTime(2019,04,23),Status=true,GatewayId=1},
+                new Device{UId=9, Vendor="Vendor 9",DateCreated=new DateTime(2010,02,14),Status=true,GatewayId=1},
+                new Device{UId=10, Vendor="Vendor 10",DateCreated=new DateTime(2020,06,03),Status=false,GatewayId=1},
+                new Device{UId=11, Vendor="Vendor 11",DateCreated=new DateTime(2020,09,19),Status=false,GatewayId=2},
+                new Device{UId=12, Vendor="Vendor 12",DateCreated=new DateTime(2020,12,05),Status=false,GatewayId=2},
+                new Device{UId=13, Vendor="Vendor 13",DateCreated=new DateTime(2020,01,25),Status=true,GatewayId=2}
            };
             foreach (Gateway g in gateways)
             {

@@ -104,7 +104,7 @@ namespace TestMusalaWebHost.Controllers
             return await _gatewayService.Delete(id);
         }
 
-        [HttpPost]
+        [HttpPost("AddDevice")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<Result> AddDevice(DeviceDto input)
@@ -113,7 +113,7 @@ namespace TestMusalaWebHost.Controllers
             return await _deviceService.AddDevice(input);
 
         }
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteDevice/{id}")]
         public async Task<Result> DeleteDevice(int id)
         {
 

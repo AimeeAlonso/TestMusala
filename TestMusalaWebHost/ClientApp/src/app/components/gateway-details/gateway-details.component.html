@@ -1,0 +1,59 @@
+<form autocomplete="off" #gatewayDetails="ngForm">
+  <div class="row">
+    <h1 class="col" mat-dialog-title>Gateway Details </h1>
+    <button class='btn btn-outline-secondary m-2' (click)="return()">Back to Gateways</button>
+    <button class='btn btn-outline-primary m-2' (click)="addDevice()">Add Peripheral Device</button>
+  </div>
+  
+  <br />
+  <div class="row">
+    <div class="col-4">
+      <label class="mr-2">Serial Number: </label>
+      {{gateway.serialNumber}}
+    </div>
+    <div class="col-4">
+      <label>Name: </label>
+      {{gateway.name}}
+    </div>
+    <div class="col-4">
+      <label>IPV4 Address: </label>
+      {{gateway.ipV4Address}}
+    </div>
+
+  </div>
+  <br />
+  
+  <br />
+
+  <table class="table table-hover table-cell table-striped">
+    <thead>
+      <tr>
+        <th>UId</th>
+        <th>Vendor</th>
+        <th>Date of Creation</th>
+        <th>Status (Online / Offline)</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let device of gateway.devices">
+        <td>{{device.uId}}</td>
+        <td>{{device.vendor}}</td>
+        <td>{{device.dateCreated}}</td>
+        <td>
+          <div *ngIf="device.status;then showTick else showCross"></div>
+          <ng-template #showTick>
+            <i class="bi bi-cloud-check"></i>
+          </ng-template>
+          <ng-template #showCross>
+            <i class="bi-cloud-slash"></i>
+          </ng-template>
+        </td>
+        <td>
+          
+          <button class='btn btn-outline-danger' (click)="deleteRow(device.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</form>

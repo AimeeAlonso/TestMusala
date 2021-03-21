@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
-import { Gateway, PaginationInfoDto, PaginationResultDto } from '../../models/gateway';
+import { Router } from '@angular/router';
+import { Gateway, PaginationInfoDto, PaginationResultDto, Result } from '../../models/models';
 
 @Component({
   selector: 'app-gateways',
@@ -15,6 +16,7 @@ export class GatewaysComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
+    private router: Router,
     @Inject('BASE_URL') private baseURL : string
   ) {
     this.pagination = new PaginationInfoDto(1,3,0);
@@ -27,6 +29,10 @@ export class GatewaysComponent implements OnInit {
   nextPage() {
     this.getGateways(this.pagination.pageNumber + 1);
   }
+  view(id: number)
+  {
+    this.router.navigate(['/gateway', id]);
+  }
   getGateways(pageNumber: number) {
     var url = this.baseURL + 'api/gateway';
     var queryParams = new HttpParams()
@@ -38,7 +44,7 @@ export class GatewaysComponent implements OnInit {
         this.pagination.pageNumber = result.pagination.pageNumber;
         this.pagination.pageSize = result.pagination.pageSize;
         this.pagination.total = result.pagination.total;
-        this.totalPages = this.pagination.pageSize == 0 ? 0 : Math.round((this.pagination.total / this.pagination.pageSize)) + 1;
+        this.totalPages = this.pagination.pageSize == 0 || this.pagination.total == 0 ? 1 : Math.floor(((this.pagination.total - 1) / this.pagination.pageSize)) + 1;
         this.nextPageDisabled = this.pagination.pageNumber == this.totalPages;
         this.prevPageDisabled = this.pagination.pageNumber <= 1;
       },
@@ -47,5 +53,20 @@ export class GatewaysComponent implements OnInit {
   ngOnInit() {
     this.getGateways(1);
   }
+  addGateway() {
+    this.router.navigate(['/gateways/add']);
+  }
+  deleteRow(id: number) {
+    var url = this.baseURL + 'api/gateway/' + id;
 
+    this.http.delete<Result>(url)
+      .subscribe(result => {
+        if (result.messages) {
+          result.messages.forEach(item => { console.log(item); });
+        }
+        this.gateways = this.gateways.filter(x => x.id != id);
+        this.getGateways(this.pagination.pageNumber);
+      },
+        error => { console.log(error) });
+  }
 }

@@ -6,6 +6,7 @@ using Services.Gateway.Dtos;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
 
 namespace Services
 {
@@ -26,6 +27,7 @@ namespace Services
             {
                 try
                 {
+                    device.DateCreated = DateTime.Today;
                     await this._repository.Insert(_mapper.Map<Device>(device));
                 }
                 catch (System.Exception)

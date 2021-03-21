@@ -20,8 +20,20 @@ namespace Services
         }
         public async Task<Result<GatewayDetailsDto>> GetById(int gatewayId) 
         {
-            var gatewayResult = await _repository.Get(gatewayId);
-            return _mapper.Map<Result<GatewayDetailsDto>>(gatewayResult);
+            Result< GatewayDetailsDto> result = new Result<GatewayDetailsDto>();
+            try
+            {
+                var gateway = await _repository.Get(gatewayId);
+                var gatewayResult = _mapper.Map<GatewayDetailsDto>(gateway);
+                result.Content = gatewayResult;
+            }
+            catch (Exception)
+            {
+
+                result.AddError("Unexpected error retrieving gateway");
+            }
+
+            return result;
         }
 
         public async Task<Result> AddGateway(GatewayDto gateway)

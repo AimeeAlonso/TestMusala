@@ -1,0 +1,34 @@
+<form autocomplete="off" #gatewayDetails="ngForm" (ngSubmit)="save()">
+  <div class="row">
+    <h1 class="col" mat-dialog-title>Add Peripheral Device </h1>
+  </div>
+  <br />
+  <div>
+    <div class="col-4">
+      <label>Universal Id: </label>
+      <input class="form-control" type="number" name="uid" [(ngModel)]="device.uid" required />
+    </div>
+    <div class="col-4">
+      <label>Vendor: </label>
+      <input class="form-control" type="text" name="vendor" [(ngModel)]="device.vendor" required />
+    </div>
+    <br />
+    <div class="col-4">
+      <div *ngIf="device.status;then showTick else showCross"></div>
+      <ng-template #showTick>
+        Status: Online ( <i class="bi bi-cloud-check"></i> )
+      </ng-template>
+      <ng-template #showCross>
+        Status: Offline ( <i class="bi-cloud-slash"></i> )
+      </ng-template>
+      <input class="switch ml-2" type="checkbox" name="status" [(ngModel)]="device.status" required />
+    </div>
+  </div>
+  <br />
+  <button class="btn btn-outline-secondary m-1" type="button" (click)="return()">
+    Cancel
+  </button>
+  <button class="btn btn-outline-success m-1" type="submit" >
+    Save
+  </button>
+</form>
