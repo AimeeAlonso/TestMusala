@@ -3,13 +3,6 @@ export class Gateway {
   serialNumber: string;
   name: string;
   ipV4Address: string;
-  constructor(serialNumber: string,
-    name: string,
-    ipV4Address: string) {
-    this.serialNumber = serialNumber;
-    this.name = name;
-    this.ipV4Address = ipV4Address;
-  }
 
 }
 export class GatewayDetail {
@@ -30,12 +23,12 @@ export class Device {
   gatewayId: number;
 
   constructor(gatewayId:number,
-    uid: number,
-    vendor: string,
+  //  uid: number,
+   // vendor: string,
     status: boolean) {
     this.gatewayId = gatewayId;
-    this.uid = uid;
-    this.vendor = vendor;
+   // this.uid = uid;
+   // this.vendor = vendor;
     this.status = status;
   }
 }

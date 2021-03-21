@@ -45,6 +45,18 @@ namespace Services
             {
                 result.AddError("Invalid IPV4 address");
             }
+            else if (gateway.Name == null||gateway.Name=="")
+            {
+                result.AddError("Please, specify a name.");
+            }
+            else if (gateway.SerialNumber == null || gateway.SerialNumber == "")
+            {
+                result.AddError("Please, specify a serial number.");
+            }
+            else if (this._repository.GetAll().Any(x => x.SerialNumber == gateway.SerialNumber))
+            {
+                result.AddError("There is already a gateway with the specified serial number");
+            }
             else
             {
                 try

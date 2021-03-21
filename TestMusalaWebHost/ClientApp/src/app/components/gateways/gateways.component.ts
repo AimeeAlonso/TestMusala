@@ -62,7 +62,10 @@ export class GatewaysComponent implements OnInit {
     this.http.delete<Result>(url)
       .subscribe(result => {
         if (result.messages) {
-          result.messages.forEach(item => { console.log(item); });
+          result.messages.forEach(item => {
+            console.error(item);
+            alert(item);
+          });
         }
         this.gateways = this.gateways.filter(x => x.id != id);
         this.getGateways(this.pagination.pageNumber);

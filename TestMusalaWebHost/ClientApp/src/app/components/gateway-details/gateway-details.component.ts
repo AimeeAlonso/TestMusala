@@ -27,7 +27,10 @@ export class GatewayDetailsComponent implements OnInit {
     this.http.get<GenericResult<GatewayDetail>>(url)
       .subscribe(result => {
         if (result.messages) {
-          result.messages.forEach(item => { console.log(item); });  
+          result.messages.forEach(item => {
+            console.error(item);
+            alert(item);
+          });  
         }
         else this.gateway = result.content;
         
@@ -36,7 +39,10 @@ export class GatewayDetailsComponent implements OnInit {
   }
 
   addDevice() {
-    this.router.navigate(['/gateway', this.gateway.id, 'add-device']);
+    if (this.gateway.devices.length==10) {
+      alert("The gateway has reached the devices limit. Please delete a device in order to add a new one");
+    }
+    else this.router.navigate(['/gateway', this.gateway.id, 'add-device']);
   }
   deleteRow(id: number) {
     var url = this.baseURL + 'api/gateway/DeleteDevice/' + id;
@@ -44,7 +50,10 @@ export class GatewayDetailsComponent implements OnInit {
     this.http.delete<Result>(url)
       .subscribe(result => {
         if (result.messages) {
-          result.messages.forEach(item => { console.log(item); });
+          result.messages.forEach(item => {
+            console.error(item);
+            alert(item);
+          });
         }
         this.gateway.devices = this.gateway.devices.filter(x => x.id != id);
       },

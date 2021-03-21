@@ -21,7 +21,7 @@ export class DeviceCreateComponent implements OnInit {
 
   ngOnInit() {
     this.gatewayId = +this.activatedRoute.snapshot.paramMap.get("id");
-    this.device = new Device(this.gatewayId,0, "", true);
+    this.device = new Device(this.gatewayId, true);
   }
   save() {
     var url = this.baseURL + 'api/gateway/AddDevice';
@@ -29,7 +29,10 @@ export class DeviceCreateComponent implements OnInit {
     this.http.post<Result>(url, this.device )
       .subscribe(result => {
         if (result.messages) {
-          result.messages.forEach(item => { console.log(item); });
+          result.messages.forEach(item => {
+            console.error(item);
+            alert(item);
+          });
         }
         else this.router.navigate(['/gateway', this.gatewayId]);
 

@@ -19,9 +19,21 @@ namespace Services
         public async Task<Result> AddDevice(DeviceDto device)
         {
             Result result = new Result();
-            if ((this._repository as IDeviceRepository).GetDeviceCount(device.GatewayId)>=10)
+            if ((this._repository as IDeviceRepository).GetDeviceCount(device.GatewayId) >= 10)
             {
-                result.AddError("The gateway has already reached the devices limit");
+                result.AddError("The gateway has reached the devices limit. Please delete a device in order to add a new one");
+            }
+            else if (device.UId == 0 )
+            {
+                result.AddError("Please, specify a universal id.");
+            }
+            else if (device.Vendor == null || device.Vendor == "")
+            {
+                result.AddError("Please, specify a vendor.");
+            }
+            else if (this._repository.GetAll().Any(x=>x.UId==device.UId))
+            {
+                result.AddError("There is already a device with the specified unversal id");
             }
             else
             {

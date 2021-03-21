@@ -19,7 +19,7 @@ export class GatewayCreateComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.gateway = new Gateway("","","");
+    this.gateway = new Gateway();
   }
   save() {
     var url = this.baseURL + 'api/gateway';
@@ -27,7 +27,11 @@ export class GatewayCreateComponent implements OnInit {
     this.http.post<Result>(url, this.gateway)
       .subscribe(result => {
         if (result.messages) {
-          result.messages.forEach(item => { console.log(item); });
+          result.messages.forEach(item => {
+            console.error(item);
+            alert(item);
+          });
+          
         }
         else this.return();
 
