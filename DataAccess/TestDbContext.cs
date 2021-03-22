@@ -13,7 +13,6 @@ namespace DataAccess
         public DbSet<Gateway> Gateways { get; set; }
         public TestDbContext(DbContextOptions<TestDbContext> options):base(options)
         {
-
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

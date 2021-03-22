@@ -16,7 +16,8 @@ namespace DataAccess
             {
                 return;  
             }
-
+            context.Database.EnsureDeleted();
+            context.Database.EnsureCreated();
             var gateways = new Gateway[]
             {
                new Gateway{ SerialNumber="G001",Name="Gateway 1",IPV4Address="192.168.10.1"},
