@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using DataAccess.Repositories;
-using Domain;
 using Services.Utils;
 using Services.Gateway.Dtos;
 using System;
@@ -92,7 +91,6 @@ namespace Services
             
             var pageData = gateways.Count()>0 ?  await gateways.Paginate(pageInfo).ToListAsync():new List<Domain.Gateway>();
 
-            //var pageDataDto = _mapper.Map<IEnumerable<GatewayDto>>(pageData);
             var pageDataDto = pageData.Select(gw => _mapper.Map<GatewayDto>(gw));
 
             return new PaginationResultDto<GatewayDto>(pageInfo, pageDataDto);

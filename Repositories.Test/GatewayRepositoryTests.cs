@@ -1,27 +1,24 @@
 ﻿using DataAccess;
 using DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
-using NSubstitute;
 using System;
 using Xunit;
 
 namespace Repositories.Test
 {
-   
+
     public class GatewayRepositoryTests
     {
-        IGatewayRepository gatewayServiceMock = Substitute.For<IGatewayRepository>();
+        DbContextOptionsBuilder<TestDbContext> builder;
         public GatewayRepositoryTests()
         {
-           
+            builder = new DbContextOptionsBuilder<TestDbContext>();
         }
         [Fact]
         public async void Get_Gateway_Returns_Element_If_Exists()
         {
-            DbContextOptions<TestDbContext> options;
-            var builder = new DbContextOptionsBuilder<TestDbContext>();
             builder.UseInMemoryDatabase("Get_Gateway_Returns_Element_If_Exists");
-            options = builder.Options;
+            var options = builder.Options;
             var gateway = new Domain.Gateway()
             {
                 Id = 1,
@@ -58,10 +55,8 @@ namespace Repositories.Test
         [Fact]
         public async void Insert_Gateway_Inserts_Element()
         {
-            DbContextOptions<TestDbContext> options;
-            var builder = new DbContextOptionsBuilder<TestDbContext>();
             builder.UseInMemoryDatabase("Insert_Gateway_Inserts_Element");
-            options = builder.Options;
+            var options = builder.Options;
 
             Domain.Gateway gateway = new Domain.Gateway();
             using (var context = new TestDbContext(options))
@@ -80,7 +75,7 @@ namespace Repositories.Test
                 gateway = context.Gateways.Find(1);
             }
 
-            Assert.True(gateway != null && gateway.Id==1);
+            Assert.True(gateway != null && gateway.Id == 1);
         }
 
         [Fact]
@@ -97,12 +92,10 @@ namespace Repositories.Test
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
                 var repository = new GatewayRepository(context);
-               
-                await Assert.ThrowsAsync<ArgumentNullException>(async ()=> await repository.Insert(null));
-                
-            }
 
-           
+                await Assert.ThrowsAsync<ArgumentNullException>(async () => await repository.Insert(null));
+
+            }
         }
 
         [Fact]
@@ -115,7 +108,7 @@ namespace Repositories.Test
             var gateway = new Domain.Gateway();
             using (var context = new TestDbContext(options))
             {
-                 gateway = new Domain.Gateway()
+                gateway = new Domain.Gateway()
                 {
                     Id = 1,
                     SerialNumber = "G1",
@@ -127,29 +120,27 @@ namespace Repositories.Test
                 context.SaveChanges();
             }
 
-            using (var context = new TestDbContext(options)) 
+            using (var context = new TestDbContext(options))
             {
                 var repository = new GatewayRepository(context);
                 await repository.Delete(gateway);
                 gateway = context.Gateways.Find(1);
             }
-            
+
             Assert.Null(gateway);
         }
 
         [Fact]
         public async void Delete_Null_Gateway_Throws_Error()
         {
-            DbContextOptions<TestDbContext> options;
-            var builder = new DbContextOptionsBuilder<TestDbContext>();
+
             builder.UseInMemoryDatabase("Delete_Null_Gateway_Throws_Error");
-            options = builder.Options;
+            var options = builder.Options;
 
             Domain.Gateway gateway = new Domain.Gateway();
             using (var context = new TestDbContext(options))
             {
-                context.Database.EnsureDeleted();
-                context.Database.EnsureCreated();
+
                 var repository = new GatewayRepository(context);
                 gateway = new Domain.Gateway()
                 {
@@ -164,8 +155,53 @@ namespace Repositories.Test
                 await Assert.ThrowsAsync<ArgumentNullException>(async () => await repository.Delete(null));
 
             }
+        }
+        [Fact]
+        public async void Delete_Non_Existing_Gateway_Throws_Error()
+        {
 
+            builder.UseInMemoryDatabase("Delete_Non_Existing_Gateway_Throws_Error");
+            var options = builder.Options;
 
+            Domain.Gateway gateway = new Domain.Gateway();
+            using (var context = new TestDbContext(options))
+            {
+                var repository = new GatewayRepository(context);
+                gateway = new Domain.Gateway()
+                {
+                    Id = 1,
+                    SerialNumber = "G1",
+                    IPV4Address = "12.12.1.2",
+                    Name = "G1"
+
+                };
+                context.Gateways.Add(gateway);
+                context.SaveChanges();
+                gateway.Id = 2;
+                await Assert.ThrowsAsync<InvalidOperationException>(async () => await repository.Delete(gateway));
+
+            }
+        }
+
+        [Fact]
+        public async void Delete_Non_Existing_Gateway_In_Empty_DB_Throws_Error()
+        {
+            builder.UseInMemoryDatabase("Delete_Non_Existing_Gateway_In_Empty_DB_Throws_Error");
+            var options = builder.Options;
+            Domain.Gateway gateway = new Domain.Gateway();
+            using (var context = new TestDbContext(options))
+            {
+                var repository = new GatewayRepository(context);
+                gateway = new Domain.Gateway()
+                {
+                    Id = 1,
+                    SerialNumber = "G1",
+                    IPV4Address = "12.12.1.2",
+                    Name = "G1"
+
+                };
+                await Assert.ThrowsAsync<DbUpdateConcurrencyException>(async () => await repository.Delete(gateway));
+            }
         }
     }
 }

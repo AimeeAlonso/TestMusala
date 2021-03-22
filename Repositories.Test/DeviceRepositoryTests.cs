@@ -1,7 +1,6 @@
 ﻿using DataAccess;
 using DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
-using NSubstitute;
 using System;
 using Xunit;
 
@@ -10,17 +9,16 @@ namespace Repositories.Test
    
     public class DeviceRepositoryTests
     {
+        DbContextOptionsBuilder<TestDbContext> builder;
         public DeviceRepositoryTests()
         {
-           
+            builder = new DbContextOptionsBuilder<TestDbContext>();
         }
         [Fact]
         public async void Get_Device_Returns_Element_If_Exists()
         {
-            DbContextOptions<TestDbContext> options;
-            var builder = new DbContextOptionsBuilder<TestDbContext>();
             builder.UseInMemoryDatabase("Get_Device_Returns_Element_If_Exists");
-            options = builder.Options;
+            var options = builder.Options;
             var device = new Domain.Device()
             {
                 Id = 1,
@@ -32,8 +30,7 @@ namespace Repositories.Test
             };
             using (var context = new TestDbContext(options))
             {
-                context.Database.EnsureDeleted();
-                context.Database.EnsureCreated();
+               
                 context.Add(device);
                 context.SaveChanges();
             }
@@ -59,16 +56,14 @@ namespace Repositories.Test
         [Fact]
         public async void Insert_Device_Inserts_Element()
         {
-            DbContextOptions<TestDbContext> options;
-            var builder = new DbContextOptionsBuilder<TestDbContext>();
+           
             builder.UseInMemoryDatabase("Insert_Device_Inserts_Element");
-            options = builder.Options;
+            var options = builder.Options;
 
             Domain.Device device = new Domain.Device();
             using (var context = new TestDbContext(options))
             {
-                context.Database.EnsureDeleted();
-                context.Database.EnsureCreated();
+               
                 var repository = new DeviceRepository(context);
                 await repository.Insert(new Domain.Device()
                 {
@@ -88,37 +83,28 @@ namespace Repositories.Test
         [Fact]
         public async void Insert_Null_Device_Throws_Error()
         {
-            DbContextOptions<TestDbContext> options;
-            var builder = new DbContextOptionsBuilder<TestDbContext>();
+           
             builder.UseInMemoryDatabase("Insert_Null_Device_Throws_Error");
-            options = builder.Options;
+            var options = builder.Options;
 
             Domain.Device device = new Domain.Device();
             using (var context = new TestDbContext(options))
             {
-                context.Database.EnsureDeleted();
-                context.Database.EnsureCreated();
                 var repository = new DeviceRepository(context);
-               
                 await Assert.ThrowsAsync<ArgumentNullException>(async ()=> await repository.Insert(null));
                 
             }
 
            
         }
-
         [Fact]
         public async void Delete_Device_Deletes_Element()
         {
-            DbContextOptions<TestDbContext> options;
-            var builder = new DbContextOptionsBuilder<TestDbContext>();
-            builder.UseInMemoryDatabase("Delete_Device_Deletes_Element");
-            options = builder.Options;
+             builder.UseInMemoryDatabase("Delete_Device_Deletes_Element");
+            var options = builder.Options;
             var device = new Domain.Device();
             using (var context = new TestDbContext(options))
             {
-                context.Database.EnsureDeleted();
-                context.Database.EnsureCreated();
                  device = new Domain.Device()
                 {
                      Id = 1,
@@ -129,6 +115,7 @@ namespace Repositories.Test
 
                  };
                 context.Devices.Add(device);
+                context.SaveChanges();
                 var repository = new DeviceRepository(context);
                 await repository.Delete(device);
                 device = context.Devices.Find(1);
@@ -140,16 +127,13 @@ namespace Repositories.Test
         [Fact]
         public async void Delete_Null_Device_Throws_Error()
         {
-            DbContextOptions<TestDbContext> options;
-            var builder = new DbContextOptionsBuilder<TestDbContext>();
+          
             builder.UseInMemoryDatabase("Delete_Null_Device_Throws_Error");
-            options = builder.Options;
+            var options = builder.Options;
 
             Domain.Device device = new Domain.Device();
             using (var context = new TestDbContext(options))
             {
-                context.Database.EnsureDeleted();
-                context.Database.EnsureCreated();
                 var repository = new DeviceRepository(context);
                 device = new Domain.Device()
                 {
@@ -161,12 +145,62 @@ namespace Repositories.Test
 
                 };
                 context.Devices.Add(device);
-               
+                context.SaveChanges();
                 await Assert.ThrowsAsync<ArgumentNullException>(async () => await repository.Delete(null));
 
             }
+        }
 
+        [Fact]
+        public async void Delete_Non_Existing_Device_Throws_Error()
+        {
 
+            builder.UseInMemoryDatabase("Delete_Non_Existing_Device_Throws_Error");
+            var options = builder.Options;
+
+            Domain.Device device = new Domain.Device();
+            using (var context = new TestDbContext(options))
+            {
+                var repository = new DeviceRepository(context);
+                device = new Domain.Device()
+                {
+                    Id = 1,
+                    Vendor = "V1",
+                    Status = true,
+                    UId = 1,
+                    DateCreated = DateTime.Today
+
+                };
+                context.Add(device);
+                context.SaveChanges();
+                device.Id = 2;
+                await Assert.ThrowsAsync<InvalidOperationException>(async () => await repository.Delete(device));
+
+            }
+        }
+
+        [Fact]
+        public async void Delete_Non_Existing_Device_In_Empty_DB_Throws_Error()
+        {
+
+            builder.UseInMemoryDatabase("Delete_Non_Existing_Device_In_Empty_DB_Throws_Error");
+            var options = builder.Options;
+
+            Domain.Device device = new Domain.Device();
+            using (var context = new TestDbContext(options))
+            {
+                var repository = new DeviceRepository(context);
+                device = new Domain.Device()
+                {
+                    Id = 1,
+                    Vendor = "V1",
+                    Status = true,
+                    UId = 1,
+                    DateCreated = DateTime.Today
+
+                };
+                await Assert.ThrowsAsync<DbUpdateConcurrencyException>(async () => await repository.Delete(device));
+            }
         }
     }
 }

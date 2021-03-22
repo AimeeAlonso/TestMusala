@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using DataAccess;
 using DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
 using NSubstitute;
@@ -18,6 +17,7 @@ namespace Services.Test
     {
         IGatewayRepository gatewayRepositoryMock = Substitute.For<IGatewayRepository>();
         IMapper mapper;
+        GatewayService service;
         public GatewayServiceTests()
         {
             ConfigureData();
@@ -56,6 +56,7 @@ namespace Services.Test
             gatewayRepositoryMock.Get(gateway.Id).Returns(Task<Domain.Gateway>.FromResult(gateway));
             gatewayRepositoryMock.Insert(gateway).Returns(Task<Domain.Gateway>.FromResult(gateway));
             gatewayRepositoryMock.Delete(gateway).Returns(Task<Domain.Gateway>.FromResult(gateway));
+            service = new GatewayService(this.gatewayRepositoryMock, mapper);
         }
 
         bool CompareGatewayDetailsDtos(GatewayDetailsDto a, GatewayDetailsDto b) 
@@ -76,8 +77,6 @@ namespace Services.Test
         [Fact]
         public async void Get_Gateway_Returns_Element()
         {
-            var service = new GatewayService(this.gatewayRepositoryMock, mapper);
-
             var gatewayResult = await service.GetById(1);
 
             Assert.Null(gatewayResult.Messages);
@@ -87,8 +86,6 @@ namespace Services.Test
         [Fact]
         public async void Insert_Gateway_Inserts_Element()
         {
-            var service = new GatewayService(this.gatewayRepositoryMock, mapper);
-
             var gatewayResult = await service.AddGateway(gatewayDto);
 
             Assert.Null(gatewayResult.Messages);
@@ -98,7 +95,6 @@ namespace Services.Test
         {
             var tempGatewayDto = gatewayDto;
             tempGatewayDto.IPV4Address = "asd";
-            var service = new GatewayService(this.gatewayRepositoryMock, mapper);
             var gatewayResult = await service.AddGateway(tempGatewayDto);
 
             Assert.True(gatewayResult.Messages!=null && gatewayResult.Messages.Contains("Invalid IPV4 address"));
@@ -108,7 +104,6 @@ namespace Services.Test
         {
             var tempGatewayDto = gatewayDto;
             tempGatewayDto.Name="";
-            var service = new GatewayService(this.gatewayRepositoryMock, mapper);
             var gatewayResult = await service.AddGateway(gatewayDto);
 
             Assert.True(gatewayResult.Messages != null && gatewayResult.Messages.Contains("Please, specify a name."));
@@ -118,7 +113,6 @@ namespace Services.Test
         {
             var tempGatewayDto = gatewayDto;
             tempGatewayDto.SerialNumber = "";
-            var service = new GatewayService(this.gatewayRepositoryMock, mapper);
             var gatewayResult = await service.AddGateway(gatewayDto);
 
             Assert.True(gatewayResult.Messages != null && gatewayResult.Messages.Contains("Please, specify a serial number."));
@@ -126,10 +120,7 @@ namespace Services.Test
         [Fact]
         public async void Invalid_Id_Throws_Error_On_Delete()
         {
-           
-            var service = new GatewayService(this.gatewayRepositoryMock, mapper);
             var gatewayResult = await service.Delete(0);
-
             Assert.True(gatewayResult.Messages != null && gatewayResult.Messages.Contains("Element to delete not found"));
         }
 

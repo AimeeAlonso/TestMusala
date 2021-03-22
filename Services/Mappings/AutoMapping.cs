@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using Services.Gateway.Dtos;
 using Domain;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Services.Mappings
 {
