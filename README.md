@@ -11,8 +11,8 @@ The solution is composed of 6 projects:
 Projects DataAccess, Domain, Services and TestMusalaWebHost correspond to different layers of a N-Tier architecture.
 
 ### How to run the project
-Modify the connectionString (optional)
-run: update-database (optional)
-run: npm-install
-Start project
+- git clone https://github.com/AimeeAlonso/TestMusala.git
+- cd TestMusala
+- dotnet run -p TestMusalaWebHost
+- Open browser at https://localhost:5001/
 
