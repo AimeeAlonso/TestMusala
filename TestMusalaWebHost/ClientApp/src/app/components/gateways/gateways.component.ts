@@ -67,7 +67,7 @@ export class GatewaysComponent implements OnInit {
             alert(item);
           });
         }
-        this.gateways = this.gateways.filter(x => x.id != id);
+        this.pagination.pageNumber = this.gateways.length == 1 ? Math.max(1, this.pagination.pageNumber - 1) : this.pagination.pageNumber
         this.getGateways(this.pagination.pageNumber);
       },
         error => { console.log(error) });

@@ -36,7 +36,10 @@ export class GatewayCreateComponent implements OnInit {
         else this.return();
 
       },
-        error => { console.log(error) });
+        error => {
+          console.error(error);
+          alert(error.message);
+        });
   }
   return() {
     this.router.navigate(['']);

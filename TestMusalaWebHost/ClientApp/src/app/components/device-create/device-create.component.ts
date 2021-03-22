@@ -24,6 +24,7 @@ export class DeviceCreateComponent implements OnInit {
     this.device = new Device(this.gatewayId, true);
   }
   save() {
+    
     var url = this.baseURL + 'api/gateway/AddDevice';
     
     this.http.post<Result>(url, this.device )
@@ -37,7 +38,10 @@ export class DeviceCreateComponent implements OnInit {
         else this.router.navigate(['/gateway', this.gatewayId]);
 
       },
-        error => { console.log(error) });
+        error => {
+          console.error(error);
+          alert(error.message);
+        });
   }
   return() {
     this.router.navigate(['/gateway', this.gatewayId]);

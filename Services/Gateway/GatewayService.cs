@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
+using System.Net.Sockets;
 
 namespace Services
 {
@@ -39,9 +40,8 @@ namespace Services
         public async Task<Result> AddGateway(GatewayDto gateway)
         {
             Result result = new Result();
-            IPAddress ipv4Address = null;
-            IPAddress.TryParse(gateway.IPV4Address, out ipv4Address);
-            if (ipv4Address==null)
+            IPAddress.TryParse(gateway.IPV4Address, out IPAddress ipv4Address);
+            if (ipv4Address == null || ipv4Address.AddressFamily!=AddressFamily.InterNetwork)
             {
                 result.AddError("Invalid IPV4 address");
             }

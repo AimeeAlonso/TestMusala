@@ -28,7 +28,7 @@
   <button class="btn btn-outline-secondary m-1" type="button" (click)="return()">
     Cancel
   </button>
-  <button class="btn btn-outline-success m-1" type="submit" >
+  <button [disabled]="device.uid==null" class="btn btn-outline-success m-1" type="submit" >
     Save
   </button>
 </form>
