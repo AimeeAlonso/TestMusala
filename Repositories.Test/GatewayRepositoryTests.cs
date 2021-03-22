@@ -81,10 +81,8 @@ namespace Repositories.Test
         [Fact]
         public async void Insert_Null_Gateway_Throws_Error()
         {
-            DbContextOptions<TestDbContext> options;
-            var builder = new DbContextOptionsBuilder<TestDbContext>();
             builder.UseInMemoryDatabase("Insert_Null_Gateway_Throws_Error");
-            options = builder.Options;
+            var options = builder.Options;
 
             Domain.Gateway gateway = new Domain.Gateway();
             using (var context = new TestDbContext(options))
@@ -101,10 +99,9 @@ namespace Repositories.Test
         [Fact]
         public async void Delete_Gateway_Deletes_Element()
         {
-            DbContextOptions<TestDbContext> options;
-            var builder = new DbContextOptionsBuilder<TestDbContext>();
+            
             builder.UseInMemoryDatabase("Delete_Gateway_Deletes_Element");
-            options = builder.Options;
+            var options = builder.Options;
             var gateway = new Domain.Gateway();
             using (var context = new TestDbContext(options))
             {
