@@ -22,6 +22,9 @@ namespace DataAccess
                new Gateway{ SerialNumber="G002",Name="Gateway 2",IPV4Address="192.168.10.2"},
                new Gateway{ SerialNumber="G003",Name="Gateway 3",IPV4Address="192.168.10.3"},
                new Gateway{ SerialNumber="G004",Name="Gateway 4",IPV4Address="192.168.10.4"},
+               new Gateway{ SerialNumber="G005",Name="Gateway 5",IPV4Address="192.168.10.5"},
+               new Gateway{ SerialNumber="G006",Name="Gateway 6",IPV4Address="192.168.10.6"},
+               new Gateway{ SerialNumber="G007",Name="Gateway 7",IPV4Address="192.168.10.7"},
 
             };
             var devices = new Device[]

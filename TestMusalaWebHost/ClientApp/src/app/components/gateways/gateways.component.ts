@@ -19,7 +19,7 @@ export class GatewaysComponent implements OnInit {
     private router: Router,
     @Inject('BASE_URL') private baseURL : string
   ) {
-    this.pagination = new PaginationInfoDto(1,3,0);
+    this.pagination = new PaginationInfoDto(1,5,0);
   }
 
   gateways: Gateway[]
